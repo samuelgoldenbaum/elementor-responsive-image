@@ -1,5 +1,5 @@
 # Elementor Responsive Image Widget
-##Overview
+## Overview
 Elementor Responsive Image is a responsive image widget for [Elementor](https://elementor.com).
 
 ## Why?
