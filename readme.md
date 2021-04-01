@@ -30,4 +30,6 @@ It is better to use background-images when:
 2. Zip the contents into an archive/zip file.
 3. Install as a plugin within WordPress.
 
+## Documentation 
+[Wiki](https://github.com/samuelgoldenbaum/elementor-responsive-image/wiki)
 
