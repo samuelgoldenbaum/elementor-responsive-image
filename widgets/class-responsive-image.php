@@ -224,10 +224,13 @@ class ResponsiveImage extends Widget_Base
                 'type' => Controls_Manager::SELECT,
                 'options' => [
                     'none' => __('None', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'attachment' => __('Attachment Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+//                    'attachment' => __('Attachment Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
                     'custom' => __('Custom Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
                 ],
                 'default' => 'none',
+                'condition' => [
+                    'tag' => 'picture',
+                ],
             ]
         );
 
@@ -239,6 +242,7 @@ class ResponsiveImage extends Widget_Base
                 'default' => '',
                 'placeholder' => __('Enter your image caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
                 'condition' => [
+                    'tag' => 'picture',
                     'caption_source' => 'custom',
                 ],
                 'dynamic' => [
@@ -424,7 +428,7 @@ class ResponsiveImage extends Widget_Base
             'plugin_info',
             [
                 'type' => Controls_Manager::RAW_HTML,
-                'raw' => '<a href="https://google.com" target="_blank">Plugin Docs</a>',
+                'raw' => '<a href="https://github.com/samuelgoldenbaum/elementor-responsive-image/wiki" target="_blank">Plugin Docs</a>',
             ]
         );
 
@@ -964,39 +968,32 @@ class ResponsiveImage extends Widget_Base
         const breakpoints = <?php echo json_encode(Responsive::get_breakpoints()); ?>;
 
         const hasCaption = () => {
-            if( ! settings.caption_source || 'none' === settings.caption_source ) {
-                return false;
+            return settings.tag === 'picture' && settings.caption_source === 'custom';
+        }
+
+        const preloadAttachments = async (attachment_ids) => {
+            const these = attachment_ids.filter((attachment_id) => {
+                return 'undefined' === typeof wp.media.attachment(attachment_id).get('url');
+            });
+
+            if (these.length === 0) {
+                return;
             }
 
-            return true;
+            const attachments = these.map((id) => {
+                return wp.media.attachment(id).fetch();
+            });
+
+            await Promise.all(attachments);
+
+            view.render();
         }
 
-        const getCaption = () => {
-            if ( ! hasCaption() ) {
-                return '';
-            }
-
-            return 'custom' === settings.caption_source ? settings.caption : getAttachmentCaption( settings.image.id );
-        }
-
-        const makeItSo = async () => {
-            const mobileMeta = await wp.media.attachment( settings.mobile_image.id ).fetch();
-
-<!--            console.info('make it so', mobileMeta.width);-->
-<!--            setTimeout(() => {-->
-<!--                console.info(document.querySelector('#elementor-responsive-image'));-->
-<!--            }, 2000);-->
-        }
-
-<!--        makeItSo();-->
-
-        let link_url;
+        let linkUrl;
         if ( 'custom' === settings.link_to ) {
-            link_url = settings.link.url;
-        }
-
-        if ( 'file' === settings.link_to ) {
-            link_url = settings.image.url;
+            linkUrl = settings.link.url;
+        } else if ( 'file' === settings.link_to ) {
+            linkUrl = settings.image.url;
         }
 
         let imgClass = '';
@@ -1009,33 +1006,97 @@ class ResponsiveImage extends Widget_Base
                 <figure class="wp-caption">
             <# } #>
 
-            <# if ( link_url ) { #>
-                <a title="{{ settings.title }}" class="elementor-responsive-image-link elementor-clickable" data-elementor-open-lightbox="{{ settings.open_lightbox }}" href="{{ link_url }}">
+            <# if ( linkUrl ) { #>
+                <a title="{{ settings.title }}" class="elementor-responsive-image-link elementor-clickable" data-elementor-open-lightbox="{{ settings.open_lightbox }}" href="{{ linkUrl }}">
             <# } #>
 
             <# if ( settings.tag === 'picture' ) {
-                let desktopOrientation = (settings.desktop_orientation !== 'exclude') ? `(orientation: ${settings.desktop_orientation}) and ` : null;
-                let tabletOrientation = (settings.tablet_orientation !== 'exclude') ? `(orientation: ${settings.tablet_orientation}) and ` : null;
-                let mobileOrientation = (settings.mobile_orientation !== 'exclude') ? `(orientation: ${settings.mobile_orientation})` : null;
+                let src = '';
             #>
                 <picture>
-                    <source srcset="{{settings.desktop_image.url}}" media="{{desktopOrientation}}(min-width: {{breakpoints.lg}}px)">
-                    <source srcset="{{settings.tablet_image.url}}" media="{{tabletOrientation}}(min-width: {{breakpoints.md}}px)">
-                    <source srcset="{{settings.mobile_image.url}}" media="{{mobileOrientation}}">
-                    <img src="{{ settings.mobile_image.url }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}">
+                    <# if (settings.desktop_image.id) {
+                        const orientation = (settings.desktop_orientation !== 'exclude') ? `(orientation: ${settings.desktop_orientation}) and ` : null;
+                        src = settings.desktop_image.url;
+                    #>
+                    <source srcset="{{settings.desktop_image.url}}" media="{{orientation}}(min-width: {{breakpoints.lg}}px)">
+                    <# } #>
+
+                    <# if (settings.tablet_image.id) {
+                        const orientation = (settings.tablet_orientation !== 'exclude') ? `(orientation: ${settings.tablet_orientation}) and ` : null;
+                        src =  settings.tablet_image.url;
+                    #>
+                    <source srcset="{{settings.tablet_image.url}}" media="{{orientation}}(min-width: {{breakpoints.md}}px)">
+                    <# } #>
+                    <# if (settings.mobile_image.id) {
+                        const orientation = (settings.mobile_orientation !== 'exclude') ? `(orientation: ${settings.mobile_orientation})` : null;
+                        src =  settings.mobile_image.url;
+                    #>
+                    <source srcset="{{settings.mobile_image.url}}" media="{{orientation}}">
+                    <# } #>
+                    <img src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}">
                 </picture>
             <# }
             else {
-                let srcSet = `${settings.desktop_image.url} 400w, ${settings.tablet_image.url} 400w, ${settings.mobile_image.url} 250w`;
-                let sizes = `(min-width: ${breakpoints['lg']}px) 200px, (min-width: ${breakpoints['md']}px) 200px, 125px`;
+                let ids = [];
+                if (settings.desktop_image.id) {
+                    ids.push(settings.desktop_image.id);
+                }
+
+                if (settings.tablet_image.id) {
+                    ids.push(settings.tablet_image.id);
+                }
+
+                if (settings.mobile_image.id) {
+                    ids.push(settings.mobile_image.id);
+                }
+
+                preloadAttachments(ids);
+
+                let srcSet = '';
+                let sizes = '';
+                let src = '';
+
+                if (settings.desktop_image.id) {
+                    const imageAttachment = wp.media.attachment(settings.desktop_image.id).attributes;
+
+                    srcSet = `${settings.desktop_image.url} ${imageAttachment.width}w`;
+                    sizes = `(min-width: ${breakpoints['lg']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
+                    src = settings.desktop_image.url;
+                }
+
+                if (settings.tablet_image.id) {
+                    const imageAttachment = wp.media.attachment(settings.tablet_image.id).attributes;
+
+                    if (srcSet.length > 0) {
+                        srcSet += `, `;
+                        sizes += `, `;
+                    }
+
+                    srcSet += `${settings.tablet_image.url} ${imageAttachment.width}w`;
+                    sizes += `(min-width: ${breakpoints['md']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
+                    src = settings.tablet_image.url;
+                }
+
+                if (settings.mobile_image.id) {
+                    const imageAttachment = wp.media.attachment(settings.mobile_image.id).attributes;
+
+                    if (srcSet.length > 0) {
+                        srcSet += `, `;
+                        sizes += `, `;
+                    }
+
+                    srcSet += `${settings.mobile_image.url} ${imageAttachment.width}w`;
+                    sizes += `${Math.ceil(imageAttachment.width / 2)}px`;
+                    src = settings.mobile_image.url;
+                }
             #>
-                <img id="elementor-responsive-image" src="{{ settings.mobile_image.url }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}" srcset="{{ srcSet }}" sizes="{{ sizes }}"/>
+                <img id="elementor-responsive-image" src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}" srcset="{{ srcSet }}" sizes="{{ sizes }}"/>
             <# }
-            if ( link_url ) { #>
+            if ( linkUrl ) { #>
                 </a>
             <# } #>
             <# if ( hasCaption() ) { #>
-                    <figcaption class="widget-image-caption wp-caption-text">{{{ getCaption() }}}</figcaption>
+                    <figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption>
                 </figure>
             <# } #>
         </div>
