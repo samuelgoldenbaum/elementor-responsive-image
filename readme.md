@@ -23,11 +23,15 @@ It is better to use background-images when:
 1. Ability to select mobile, tablet, and desktop images.
 2. Ability to select the element to use: `img` or `picture`.
 3. Ability to select the [orientation](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/orientation) when using the picture element.
-4. Ability to use Elementor Pro dynamic tags.
+4. Ability to set the default loading behavior for the image: eager or lazy.
+5. Ability to use Elementor Pro dynamic tags.
 
 ## Installation
 1. Clone or download the repo.
 2. Zip the contents into an archive/zip file.
 3. Install as a plugin within WordPress.
+
+## Documentation
+[Wiki](https://github.com/samuelgoldenbaum/elementor-responsive-image/wiki)
 
 

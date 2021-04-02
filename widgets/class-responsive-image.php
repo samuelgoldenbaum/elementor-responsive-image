@@ -299,10 +299,19 @@ class ResponsiveImage extends Widget_Base
         );
 
         $this->add_control(
-            'separator_mobile',
+            'separator_images',
             [
                 'type' => Controls_Manager::DIVIDER,
                 'style' => 'thick',
+            ]
+        );
+
+        $this->add_control(
+            'mobile_image_required',
+            [
+                'label' => __('* Mobile Image is required', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'type' => Controls_Manager::RAW_HTML,
+                'raw' => '',
             ]
         );
 
@@ -864,7 +873,6 @@ class ResponsiveImage extends Widget_Base
 
         $this->add_render_attribute('wrapper', 'class', 'elementor-image');
 
-        $this->add_render_attribute('image', 'src', $settings['mobile_image']['url']);
         $this->add_render_attribute('image', 'alt', $settings['alt']);
         $this->add_render_attribute('image', 'title', $settings['title']);
         $this->add_render_attribute('image', 'loading', $settings['loading']);
@@ -872,48 +880,79 @@ class ResponsiveImage extends Widget_Base
         $image_html = '';
 
         if ($settings['tag'] === 'img') {
-            // get the meta data from the attachment so we have the dimensions
-            $mobile_image_meta = get_post_meta($settings['mobile_image']['id'], '_wp_attachment_metadata', true);
-            $tablet_image_meta = get_post_meta($settings['tablet_image']['id'], '_wp_attachment_metadata', true);
-            $desktop_image_meta = get_post_meta($settings['desktop_image']['id'], '_wp_attachment_metadata', true);
+            $srcset = '';
+            $sizes = '';
 
-            // build up the srcset using the intrinsic dimensions
-            $srcset = "{$settings['desktop_image']['url']} {$desktop_image_meta['width']}w";
-            $srcset .= ", {$settings['tablet_image']['url']} {$tablet_image_meta['width']}w";
-            $srcset .= ", {$settings['mobile_image']['url']} {$mobile_image_meta['width']}w";
+            if (! empty($settings['desktop_image']['id'])) {
+                $desktop_image_meta = get_post_meta($settings['desktop_image']['id'], '_wp_attachment_metadata', true);
+                $desktop_image_meta_width_adjusted_for_retina = $desktop_image_meta['width'] / 2;
+
+                $srcset = "{$settings['desktop_image']['url']} {$desktop_image_meta['width']}w";
+                $sizes = "(min-width: {$breakpoints['lg']}px) {$desktop_image_meta_width_adjusted_for_retina}px";
+                $this->add_render_attribute('image', 'src', $settings['desktop_image']['url']);
+            }
+
+            if (! empty($settings['tablet_image']['id'])) {
+                $tablet_image_meta = get_post_meta($settings['tablet_image']['id'], '_wp_attachment_metadata', true);
+                $tablet_image_meta_width_adjusted_for_retina = $tablet_image_meta['width'] / 2;
+
+                if ($srcset !== '') {
+                    $srcset .= ', ';
+                    $sizes .= ', ';
+                }
+
+                $srcset .= "{$settings['tablet_image']['url']} {$tablet_image_meta['width']}w";
+                $sizes .= ", (min-width: {$breakpoints['md']}px) {$tablet_image_meta_width_adjusted_for_retina}px";
+                $this->add_render_attribute('image', 'src', $settings['tablet_image']['url']);
+            }
+
+            if (! empty($settings['mobile_image']['id'])) {
+                $mobile_image_meta = get_post_meta($settings['mobile_image']['id'], '_wp_attachment_metadata', true);
+                $mobile_image_meta_width_adjusted_for_retina = $mobile_image_meta['width'] / 2;
+
+                if ($srcset !== '') {
+                    $srcset .= ', ';
+                    $sizes .= ', ';
+                }
+
+                $srcset .= "{$settings['mobile_image']['url']} {$mobile_image_meta['width']}w";
+                $sizes .= "{$mobile_image_meta_width_adjusted_for_retina}px";
+                $this->add_render_attribute('image', 'src', $settings['mobile_image']['url']);
+            }
+
             $this->add_render_attribute('image', 'srcset', $srcset);
-
-            // we need to adjust for retina
-            $desktop_image_meta_width_adjusted_for_retina = $desktop_image_meta['width'] / 2;
-            $tablet_image_meta_width_adjusted_for_retina = $tablet_image_meta['width'] / 2;
-            $mobile_image_meta_width_adjusted_for_retina = $mobile_image_meta['width'] / 2;
-
-            $sizes = "(min-width: {$breakpoints['lg']}px) {$desktop_image_meta_width_adjusted_for_retina}px";
-            $sizes .= ", (min-width: {$breakpoints['md']}px) {$tablet_image_meta_width_adjusted_for_retina}px";
-            $sizes .= ", {$mobile_image_meta_width_adjusted_for_retina}px";
             $this->add_render_attribute('image', 'sizes', $sizes);
 
             $image_html = '<img ' . $this->get_render_attribute_string('image') . '/>';
         } else {
             $image_html .= '<picture>';
 
-            $desktop_orientation = '';
-            if ($settings['desktop_orientation'] !== 'exclude') {
-                $desktop_orientation = "(orientation: {$settings['desktop_orientation']}) and ";
+            if (! empty($settings['desktop_image']['id'])) {
+                $desktop_orientation = '';
+                if ($settings['desktop_orientation'] !== 'exclude') {
+                    $desktop_orientation = "(orientation: {$settings['desktop_orientation']}) and ";
+                }
+                $image_html .= "<source srcset=\"{$settings['desktop_image']['url']}\" media=\"{$desktop_orientation}(min-width: {$breakpoints['lg']}px)\">";
+                $this->add_render_attribute('image', 'src', $settings['desktop_image']['url']);
             }
-            $image_html .= "<source srcset=\"{$settings['desktop_image']['url']}\" media=\"{$desktop_orientation}(min-width: {$breakpoints['lg']}px)\">";
 
-            $tablet_orientation = '';
-            if ($settings['tablet_orientation'] !== 'exclude') {
-                $tablet_orientation = "(orientation: {$settings['tablet_orientation']}) and ";
+            if (! empty($settings['tablet_image']['id'])) {
+                $tablet_orientation = '';
+                if ($settings['tablet_orientation'] !== 'exclude') {
+                    $tablet_orientation = "(orientation: {$settings['tablet_orientation']}) and ";
+                }
+                $image_html .= "<source srcset=\"{$settings['tablet_image']['url']}\" media=\"{$tablet_orientation}(min-width: {$breakpoints['md']}px)\">";
+                $this->add_render_attribute('image', 'src', $settings['tablet_image']['url']);
             }
-            $image_html .= "<source srcset=\"{$settings['tablet_image']['url']}\" media=\"{$tablet_orientation}(min-width: {$breakpoints['md']}px)\">";
 
-            $mobile_orientation = '';
-            if ($settings['mobile_orientation'] !== 'exclude') {
-                $mobile_orientation = "media=\"(orientation: {$settings['mobile_orientation']})\"";
+            if (! empty($settings['mobile_image']['id'])) {
+                $mobile_orientation = '';
+                if ($settings['mobile_orientation'] !== 'exclude') {
+                    $mobile_orientation = "media=\"(orientation: {$settings['mobile_orientation']})\"";
+                }
+                $image_html .= "<source srcset=\"{$settings['mobile_image']['url']}\" {$mobile_orientation}>";
+                $this->add_render_attribute('image', 'src', $settings['mobile_image']['url']);
             }
-            $image_html .= "<source srcset=\"{$settings['mobile_image']['url']}\" {$mobile_orientation}>";
 
             $image_html .= '<img ' . $this->get_render_attribute_string('image') . '>';
             $image_html .= '</picture>';
