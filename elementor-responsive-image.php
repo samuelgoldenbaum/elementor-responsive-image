@@ -4,12 +4,12 @@
  *
  * @package ElementorResponsiveImage
  *
- * Plugin Name: Elementor Responsive Image
+ * Plugin Name: Responsive Image For Elementor
  * Description: Modern Responsive Image
  * Plugin URI:  https://github.com/samuelgoldenbaum/elementor-responsive-image/
  * Version:     1.0.0
  * Author:      Samuel Goldenbaum
- * Author URI:  https://github.com/samuelgoldenbaum/elementor-responsive-image/
+ * Author URI:  https://github.com/samuelgoldenbaum/
  * Text Domain: elementor-responsive-image
  */
 
