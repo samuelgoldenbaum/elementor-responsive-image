@@ -3,17 +3,17 @@
  * Widgets class.
  *
  * @category   Class
- * @package    ElementorResponsiveImage
+ * @package    ResponsiveImageForElementor
  * @subpackage WordPress
  * @author     Samuel Goldenbaum
  * @copyright  2021 Samuel Goldenbaum
  * @license    https://opensource.org/licenses/GPL-3.0 GPL-3.0-only
- * @link       https://github.com/samuelgoldenbaum/elementor-responsive-image/
+ * @link       https://github.com/samuelgoldenbaum/responsive-image-for-elementor/
  * @since      1.0.0
  * php version 7.3.9
  */
 
-namespace ElementorResponsiveImage;
+namespace ResponsiveImageForElementor;
 
 use Elementor\Plugin;
 

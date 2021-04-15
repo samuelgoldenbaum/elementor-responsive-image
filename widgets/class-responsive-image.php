@@ -3,17 +3,17 @@
  * ResponsiveImage class.
  *
  * @category   Class
- * @package    ElementorResponsiveImage
+ * @package    ResponsiveImageForElementor
  * @subpackage WordPress
  * @author     Samuel Goldenbaum
  * @copyright  2021 Samuel Goldenbaum
  * @license    https://opensource.org/licenses/GPL-3.0 GPL-3.0-only
- * @link       https://github.com/samuelgoldenbaum/elementor-responsive-image/
+ * @link       https://github.com/samuelgoldenbaum/responsive-image-for-elementor/
  * @since      1.0.0
  * php version 7.3.9
  */
 
-namespace ElementorResponsiveImage\Widgets;
+namespace ResponsiveImageForElementor\Widgets;
 
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
@@ -50,7 +50,7 @@ class ResponsiveImage extends Widget_Base
         parent::__construct($data, $args);
 
         // not really needed, lets save the http request
-        // wp_register_style('responsive-image', plugins_url('/assets/css/responsive-image.css', ELEMENTOR_RESPONSIVE_IMAGE), array(), '1.0.0');
+        // wp_register_style('responsive-image-for-elementor', plugins_url('/assets/css/responsive-image-for-elementor.css', RESPONSIVE_IMAGE_FOR_ELEMENTOR_FILE), array(), '1.0.0');
     }
 
     /**
@@ -76,7 +76,7 @@ class ResponsiveImage extends Widget_Base
      *
      */
     public function get_title() {
-        return __('Responsive Image', ELEMENTOR_RESPONSIVE_IMAGE_TD);
+        return __('Responsive Image', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD);
     }
 
     /**
@@ -114,7 +114,7 @@ class ResponsiveImage extends Widget_Base
      * Enqueue styles.
      */
     public function get_style_depends() {
-        return array('responsive-image');
+        return array('responsive-image-for-elementor');
     }
 
     /**
@@ -130,16 +130,16 @@ class ResponsiveImage extends Widget_Base
         $this->start_controls_section(
             'section_shared',
             array(
-                'label' => __('Settings', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Settings', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
             )
         );
 
         $this->add_control(
             'title',
             array(
-                'label' => __('Title', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Title', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::TEXT,
-                'default' => __('', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'default' => __('', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'dynamic' => [
                     'active' => true,
                 ],
@@ -149,9 +149,9 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'alt',
             array(
-                'label' => __('Alt Text', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Alt Text', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::TEXT,
-                'default' => __('', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'default' => __('', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'dynamic' => [
                     'active' => true,
                 ],
@@ -161,12 +161,12 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'loading',
             [
-                'label' => __('Loading', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Loading', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'lazy',
                 'options' => [
-                    'lazy' => __('Lazy (recommended)', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'eager' => __('Eager (browser default)', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'lazy' => __('Lazy (recommended)', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'eager' => __('Eager (browser default)', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
             ]
         );
@@ -174,12 +174,12 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'tag',
             [
-                'label' => __('Tag', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Tag', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'img',
                 'options' => [
-                    'img' => __('img', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'picture' => __('picture', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'img' => __('img', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'picture' => __('picture', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
             ]
         );
@@ -195,19 +195,19 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'align',
             [
-                'label' => __('Alignment', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Alignment', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => __('Left', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Left', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Center', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
-                        'title' => __('Right', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Right', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-right',
                     ],
                 ],
@@ -220,12 +220,11 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'caption_source',
             [
-                'label' => __('Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Caption', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'options' => [
-                    'none' => __('None', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-//                    'attachment' => __('Attachment Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'custom' => __('Custom Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'none' => __('None', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'custom' => __('Custom Caption', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
                 'default' => 'none',
                 'condition' => [
@@ -237,10 +236,10 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'caption',
             [
-                'label' => __('Custom Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Custom Caption', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::TEXT,
                 'default' => '',
-                'placeholder' => __('Enter your image caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'placeholder' => __('Enter your image caption', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'condition' => [
                     'tag' => 'picture',
                     'caption_source' => 'custom',
@@ -254,13 +253,13 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'link_to',
             [
-                'label' => __('Link', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Link', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'none',
                 'options' => [
-                    'none' => __('None', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'file' => __('Media File', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'custom' => __('Custom URL', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'none' => __('None', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'file' => __('Media File', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'custom' => __('Custom URL', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
             ]
         );
@@ -268,12 +267,12 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'link',
             [
-                'label' => __('Link', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Link', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::URL,
                 'dynamic' => [
                     'active' => true,
                 ],
-                'placeholder' => __('https://your-link.com', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'placeholder' => __('https://your-link.com', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'condition' => [
                     'link_to' => 'custom',
                 ],
@@ -284,13 +283,13 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'open_lightbox',
             [
-                'label' => __('Lightbox', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Lightbox', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'default',
                 'options' => [
-                    'default' => __('Default', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'yes' => __('Yes', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'no' => __('No', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'default' => __('Default', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'yes' => __('Yes', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'no' => __('No', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
                 'condition' => [
                     'link_to' => 'file',
@@ -306,23 +305,24 @@ class ResponsiveImage extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'mobile_image_required',
-            [
-                'label' => __('* Mobile Image is required', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                'type' => Controls_Manager::RAW_HTML,
-                'raw' => '',
-            ]
-        );
+//        $this->add_control(
+//            'mobile_image_required',
+//            [
+//                'label' => __('* Mobile Image is required', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+//                'type' => Controls_Manager::RAW_HTML,
+//                'raw' => '',
+//            ]
+//        );
 
         $this->add_control(
             'mobile_image',
             [
-                'label' => __('Mobile Image', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Mobile Image', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::MEDIA,
                 'dynamic' => [
                     'active' => true,
                 ],
+                'description' => __('* Mobile Image is required', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'default' => [
                     'url' => Utils::get_placeholder_image_src(),
                 ],
@@ -332,13 +332,13 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'mobile_orientation',
             [
-                'label' => __('Mobile Image Orientation', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Mobile Image Orientation', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'exclude',
                 'options' => [
-                    'exclude' => __('Exclude', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'landscape' => __('Landscape', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'portrait' => __('Portrait', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'exclude' => __('Exclude', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'landscape' => __('Landscape', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'portrait' => __('Portrait', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
                 'condition' => [
                     'tag' => 'picture',
@@ -351,13 +351,16 @@ class ResponsiveImage extends Widget_Base
             [
                 'type' => Controls_Manager::DIVIDER,
                 'style' => 'thick',
+                'condition' => [
+                    'mobile_image[id]!' => '',
+                ],
             ]
         );
 
         $this->add_control(
             'tablet_image',
             [
-                'label' => __('Tablet Image', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Tablet Image', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::MEDIA,
                 'dynamic' => [
                     'active' => true,
@@ -365,21 +368,25 @@ class ResponsiveImage extends Widget_Base
                 'default' => [
                     'url' => Utils::get_placeholder_image_src(),
                 ],
+                'condition' => [
+                    'mobile_image[id]!' => '',
+                ],
             ]
         );
 
         $this->add_control(
             'tablet_orientation',
             [
-                'label' => __('Tablet Image Orientation', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Tablet Image Orientation', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'exclude',
                 'options' => [
-                    'exclude' => __('Exclude', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'landscape' => __('Landscape', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'portrait' => __('Portrait', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'exclude' => __('Exclude', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'landscape' => __('Landscape', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'portrait' => __('Portrait', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
                 'condition' => [
+                    'mobile_image[id]!' => '',
                     'tag' => 'picture',
                 ],
             ]
@@ -390,13 +397,16 @@ class ResponsiveImage extends Widget_Base
             [
                 'type' => Controls_Manager::DIVIDER,
                 'style' => 'thick',
+                'condition' => [
+                    'mobile_image[id]!' => '',
+                ],
             ]
         );
 
         $this->add_control(
             'desktop_image',
             [
-                'label' => __('Desktop Image', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Desktop Image', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::MEDIA,
                 'dynamic' => [
                     'active' => true,
@@ -404,21 +414,25 @@ class ResponsiveImage extends Widget_Base
                 'default' => [
                     'url' => Utils::get_placeholder_image_src(),
                 ],
+                'condition' => [
+                    'mobile_image[id]!' => '',
+                ],
             ]
         );
 
         $this->add_control(
             'desktop_orientation',
             [
-                'label' => __('Desktop Image Orientation', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Desktop Image Orientation', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'default' => 'exclude',
                 'options' => [
-                    'exclude' => __('Exclude', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'landscape' => __('Landscape', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'portrait' => __('Portrait', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    'exclude' => __('Exclude', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'landscape' => __('Landscape', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'portrait' => __('Portrait', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
                 'condition' => [
+                    'mobile_image[id]!' => '',
                     'tag' => 'picture',
                 ],
             ]
@@ -429,7 +443,7 @@ class ResponsiveImage extends Widget_Base
         $this->start_controls_section(
             'section_content_info',
             [
-                'label' => __('Help', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Help', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
             ]
         );
 
@@ -437,7 +451,7 @@ class ResponsiveImage extends Widget_Base
             'plugin_info',
             [
                 'type' => Controls_Manager::RAW_HTML,
-                'raw' => '<a href="https://github.com/samuelgoldenbaum/elementor-responsive-image/wiki" target="_blank">Plugin Docs</a>',
+                'raw' => '<a href="https://github.com/samuelgoldenbaum/responsive-image-for-elementor/wiki" target="_blank">Plugin Docs</a>',
             ]
         );
 
@@ -447,7 +461,7 @@ class ResponsiveImage extends Widget_Base
         $this->start_controls_section(
             'section_style_image',
             [
-                'label' => __('Image', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Image', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -455,7 +469,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'width',
             [
-                'label' => __('Width', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Width', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'default' => [
                     'unit' => '%',
@@ -490,7 +504,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'space',
             [
-                'label' => __('Max Width', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Max Width', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'default' => [
                     'unit' => '%',
@@ -525,7 +539,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'height',
             [
-                'label' => __('Height', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Height', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'default' => [
                     'unit' => 'px',
@@ -557,16 +571,16 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'object-fit',
             [
-                'label' => __('Object Fit', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Object Fit', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SELECT,
                 'condition' => [
                     'height[size]!' => '',
                 ],
                 'options' => [
-                    '' => __('Default', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'fill' => __('Fill', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'cover' => __('Cover', ELEMENTOR_RESPONSIVE_IMAGE_TD),
-                    'contain' => __('Contain', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                    '' => __('Default', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'fill' => __('Fill', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'cover' => __('Cover', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    'contain' => __('Contain', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 ],
                 'default' => '',
                 'selectors' => [
@@ -587,14 +601,14 @@ class ResponsiveImage extends Widget_Base
 
         $this->start_controls_tab('normal',
             [
-                'label' => __('Normal', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Normal', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
             ]
         );
 
         $this->add_control(
             'opacity',
             [
-                'label' => __('Opacity', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Opacity', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
@@ -621,14 +635,14 @@ class ResponsiveImage extends Widget_Base
 
         $this->start_controls_tab('hover',
             [
-                'label' => __('Hover', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Hover', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
             ]
         );
 
         $this->add_control(
             'opacity_hover',
             [
-                'label' => __('Opacity', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Opacity', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
@@ -654,7 +668,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'background_hover_transition',
             [
-                'label' => __('Transition Duration', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Transition Duration', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
@@ -671,7 +685,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'hover_animation',
             [
-                'label' => __('Hover Animation', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Hover Animation', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::HOVER_ANIMATION,
             ]
         );
@@ -692,7 +706,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'image_border_radius',
             [
-                'label' => __('Border Radius', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Border Radius', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors' => [
@@ -718,7 +732,7 @@ class ResponsiveImage extends Widget_Base
         $this->start_controls_section(
             'section_style_caption',
             [
-                'label' => __('Caption', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Caption', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'tab' => Controls_Manager::TAB_STYLE,
                 'condition' => [
                     'caption_source!' => 'none',
@@ -729,23 +743,23 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'caption_align',
             [
-                'label' => __('Alignment', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Alignment', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::CHOOSE,
                 'options' => [
                     'left' => [
-                        'title' => __('Left', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Left', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-left',
                     ],
                     'center' => [
-                        'title' => __('Center', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Center', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-center',
                     ],
                     'right' => [
-                        'title' => __('Right', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Right', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-right',
                     ],
                     'justify' => [
-                        'title' => __('Justified', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                        'title' => __('Justified', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                         'icon' => 'eicon-text-align-justify',
                     ],
                 ],
@@ -759,7 +773,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'text_color',
             [
-                'label' => __('Text Color', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Text Color', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::COLOR,
                 'default' => '',
                 'selectors' => [
@@ -774,7 +788,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_control(
             'caption_background_color',
             [
-                'label' => __('Background Color', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Background Color', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .widget-image-caption' => 'background-color: {{VALUE}};',
@@ -804,7 +818,7 @@ class ResponsiveImage extends Widget_Base
         $this->add_responsive_control(
             'caption_space',
             [
-                'label' => __('Spacing', ELEMENTOR_RESPONSIVE_IMAGE_TD),
+                'label' => __('Spacing', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'type' => Controls_Manager::SLIDER,
                 'range' => [
                     'px' => [
@@ -859,6 +873,26 @@ class ResponsiveImage extends Widget_Base
     }
 
     /**
+     * Retrieve viewbox dimensions for svg attachments
+     *
+     * @param string $url
+     *
+     * @return array An array containing the width and height
+     * @since 1.0.0
+     * @access private
+     *
+     */
+    private function get_svg_dimensions($url) {
+        $xml = simplexml_load_file($url);
+        $attr = $xml->attributes();
+        $viewbox = explode(' ', $attr->viewBox);
+        $meta['width'] = isset($attr->width) && preg_match('/\d+/', $attr->width, $value) ? (int)$value[0] : (count($viewbox) == 4 ? (int)$viewbox[2] : null);
+        $meta['height'] = isset($attr->height) && preg_match('/\d+/', $attr->height, $value) ? (int)$value[0] : (count($viewbox) == 4 ? (int)$viewbox[3] : null);
+
+        return $meta;
+    }
+
+    /**
      * Render the widget output on the frontend.
      *
      * Written in PHP and used to generate the final HTML.
@@ -870,6 +904,9 @@ class ResponsiveImage extends Widget_Base
     protected function render() {
         $settings = $this->get_settings_for_display();
         $breakpoints = Responsive::get_breakpoints();
+        $mime_type = '';
+        $responsive = false;
+        $src = '';
 
         $this->add_render_attribute('wrapper', 'class', 'elementor-image');
 
@@ -883,17 +920,18 @@ class ResponsiveImage extends Widget_Base
             $srcset = '';
             $sizes = '';
 
-            if (! empty($settings['desktop_image']['id'])) {
-                $desktop_image_meta = get_post_meta($settings['desktop_image']['id'], '_wp_attachment_metadata', true);
+            if (!empty($settings['desktop_image']['id'])) {
+                $desktop_image_meta = wp_get_attachment_metadata($settings['desktop_image']['id']);
                 $desktop_image_meta_width_adjusted_for_retina = $desktop_image_meta['width'] / 2;
 
                 $srcset = "{$settings['desktop_image']['url']} {$desktop_image_meta['width']}w";
                 $sizes = "(min-width: {$breakpoints['lg']}px) {$desktop_image_meta_width_adjusted_for_retina}px";
-                $this->add_render_attribute('image', 'src', $settings['desktop_image']['url']);
+                $src = $settings['desktop_image']['url'];
+                $responsive = true;
             }
 
-            if (! empty($settings['tablet_image']['id'])) {
-                $tablet_image_meta = get_post_meta($settings['tablet_image']['id'], '_wp_attachment_metadata', true);
+            if (!empty($settings['tablet_image']['id'])) {
+                $tablet_image_meta = wp_get_attachment_metadata($settings['tablet_image']['id']);
                 $tablet_image_meta_width_adjusted_for_retina = $tablet_image_meta['width'] / 2;
 
                 if ($srcset !== '') {
@@ -903,57 +941,91 @@ class ResponsiveImage extends Widget_Base
 
                 $srcset .= "{$settings['tablet_image']['url']} {$tablet_image_meta['width']}w";
                 $sizes .= ", (min-width: {$breakpoints['md']}px) {$tablet_image_meta_width_adjusted_for_retina}px";
-                $this->add_render_attribute('image', 'src', $settings['tablet_image']['url']);
+                $src = $settings['tablet_image']['url'];
+                $responsive = true;
             }
 
-            if (! empty($settings['mobile_image']['id'])) {
-                $mobile_image_meta = get_post_meta($settings['mobile_image']['id'], '_wp_attachment_metadata', true);
-                $mobile_image_meta_width_adjusted_for_retina = $mobile_image_meta['width'] / 2;
+            if (!empty($settings['mobile_image']['id'])) {
+                $mobile_image_meta = wp_get_attachment_metadata($settings['mobile_image']['id']);
+                if (empty($mobile_image_meta['width'])) {
+//                    $mime_type = get_post_mime_type($settings['mobile_image']['id']);
+//                    if ($mime_type === 'image/svg+xml' && !$responsive) {
+//                        $svg_meta = $this->get_svg_dimensions($settings['mobile_image']['url']);
+//                        $svg_width = $svg_meta['width'];
+//                        $svg_height = $svg_meta['height'];
+//
+//                        $this->add_render_attribute('image', 'width', $svg_width);
+//                        $this->add_render_attribute('image', 'height', $svg_height);
+//                    }
+                } else {
+                    $mobile_image_meta_width_adjusted_for_retina = $mobile_image_meta['width'] / 2;
 
-                if ($srcset !== '') {
-                    $srcset .= ', ';
-                    $sizes .= ', ';
+                    if ($srcset !== '') {
+                        $srcset .= ', ';
+                        $sizes .= ', ';
+                    }
+
+                    $srcset .= "{$settings['mobile_image']['url']} {$mobile_image_meta['width']}w";
+                    $sizes .= "{$mobile_image_meta_width_adjusted_for_retina}px";
                 }
 
-                $srcset .= "{$settings['mobile_image']['url']} {$mobile_image_meta['width']}w";
-                $sizes .= "{$mobile_image_meta_width_adjusted_for_retina}px";
-                $this->add_render_attribute('image', 'src', $settings['mobile_image']['url']);
+                $src = $settings['mobile_image']['url'];
             }
 
-            $this->add_render_attribute('image', 'srcset', $srcset);
-            $this->add_render_attribute('image', 'sizes', $sizes);
+            if ($responsive) {
+                $this->add_render_attribute('image', 'srcset', $srcset);
+                $this->add_render_attribute('image', 'sizes', $sizes);
+            }
 
+            $this->add_render_attribute('image', 'src', $src);
             $image_html = '<img ' . $this->get_render_attribute_string('image') . '/>';
         } else {
             $image_html .= '<picture>';
 
-            if (! empty($settings['desktop_image']['id'])) {
+            if (!empty($settings['desktop_image']['id'])) {
                 $desktop_orientation = '';
                 if ($settings['desktop_orientation'] !== 'exclude') {
                     $desktop_orientation = "(orientation: {$settings['desktop_orientation']}) and ";
                 }
                 $image_html .= "<source srcset=\"{$settings['desktop_image']['url']}\" media=\"{$desktop_orientation}(min-width: {$breakpoints['lg']}px)\">";
-                $this->add_render_attribute('image', 'src', $settings['desktop_image']['url']);
+                $src = $settings['desktop_image']['url'];
+                $responsive = true;
             }
 
-            if (! empty($settings['tablet_image']['id'])) {
+            if (!empty($settings['tablet_image']['id'])) {
                 $tablet_orientation = '';
                 if ($settings['tablet_orientation'] !== 'exclude') {
                     $tablet_orientation = "(orientation: {$settings['tablet_orientation']}) and ";
                 }
                 $image_html .= "<source srcset=\"{$settings['tablet_image']['url']}\" media=\"{$tablet_orientation}(min-width: {$breakpoints['md']}px)\">";
-                $this->add_render_attribute('image', 'src', $settings['tablet_image']['url']);
+                $src = $settings['tablet_image']['url'];
+                $responsive = true;
             }
 
-            if (! empty($settings['mobile_image']['id'])) {
-                $mobile_orientation = '';
-                if ($settings['mobile_orientation'] !== 'exclude') {
-                    $mobile_orientation = "media=\"(orientation: {$settings['mobile_orientation']})\"";
+            if (!empty($settings['mobile_image']['id'])) {
+                $mobile_image_meta = wp_get_attachment_metadata($settings['mobile_image']['id']);
+                if (empty($mobile_image_meta['width'])) {
+//                    $mime_type = get_post_mime_type($settings['mobile_image']['id']);
+//                    if ($mime_type === 'image/svg+xml' && !$responsive) {
+//                        $svg_meta = $this->get_svg_dimensions($settings['mobile_image']['url']);
+//                        $svg_width = $svg_meta['width'];
+//                        $svg_height = $svg_meta['height'];
+//
+//                        $this->add_render_attribute('image', 'width', $svg_width);
+//                        $this->add_render_attribute('image', 'height', $svg_height);
+//                    }
+                } else {
+                    $mobile_orientation = '';
+                    if ($settings['mobile_orientation'] !== 'exclude') {
+                        $mobile_orientation = "media=\"(orientation: {$settings['mobile_orientation']})\"";
+                    }
+                    $image_html .= "<source srcset=\"{$settings['mobile_image']['url']}\" {$mobile_orientation}>";
                 }
-                $image_html .= "<source srcset=\"{$settings['mobile_image']['url']}\" {$mobile_orientation}>";
-                $this->add_render_attribute('image', 'src', $settings['mobile_image']['url']);
+
+                $src = $settings['mobile_image']['url'];
             }
 
+            $this->add_render_attribute('image', 'src', $src);
             $image_html .= '<img ' . $this->get_render_attribute_string('image') . '>';
             $image_html .= '</picture>';
         }
@@ -972,7 +1044,7 @@ class ResponsiveImage extends Widget_Base
                 $this->add_lightbox_data_attributes('link', $settings['image']['id'], $settings['open_lightbox']);
             }
 
-            $link_html = '<a class="elementor-responsive-image-link" ' . $this->get_render_attribute_string('link');
+            $link_html = '<a class="responsive-image-for-elementor-link" ' . $this->get_render_attribute_string('link');
             if (isset($settings['title']) && trim($settings['title']) !== '') {
                 $link_html .= ' title="' . $settings['title'] . '"';
             }
@@ -1005,6 +1077,8 @@ class ResponsiveImage extends Widget_Base
         ?>
         <#
         const breakpoints = <?php echo json_encode(Responsive::get_breakpoints()); ?>;
+
+        let responsive = false;
 
         const hasCaption = () => {
             return settings.tag === 'picture' && settings.caption_source === 'custom';
@@ -1042,101 +1116,117 @@ class ResponsiveImage extends Widget_Base
         #>
         <div class="elementor-image{{ settings.shape ? ' elementor-image-shape-' + settings.shape : '' }}">
             <# if ( hasCaption() ) { #>
-                <figure class="wp-caption">
-            <# } #>
+            <figure class="wp-caption">
+                <# } #>
 
-            <# if ( linkUrl ) { #>
-                <a title="{{ settings.title }}" class="elementor-responsive-image-link elementor-clickable" data-elementor-open-lightbox="{{ settings.open_lightbox }}" href="{{ linkUrl }}">
-            <# } #>
+                <# if ( linkUrl ) { #>
+                <a title="{{ settings.title }}" class="responsive-image-for-elementor-link elementor-clickable" data-elementor-open-lightbox="{{ settings.open_lightbox }}" href="{{ linkUrl }}">
+                    <# } #>
 
-            <# if ( settings.tag === 'picture' ) {
-                let src = '';
-            #>
-                <picture>
-                    <# if (settings.desktop_image.id) {
+                    <# if ( settings.tag === 'picture' ) {
+                        let src = '';
+                    #>
+                    <picture>
+                        <# if (settings.desktop_image.id) {
                         const orientation = (settings.desktop_orientation !== 'exclude') ? `(orientation: ${settings.desktop_orientation}) and ` : null;
                         src = settings.desktop_image.url;
-                    #>
-                    <source srcset="{{settings.desktop_image.url}}" media="{{orientation}}(min-width: {{breakpoints.lg}}px)">
-                    <# } #>
+                        #>
+                        <source srcset="{{settings.desktop_image.url}}" media="{{orientation}}(min-width: {{breakpoints.lg}}px)">
+                        <# } #>
 
-                    <# if (settings.tablet_image.id) {
+                        <# if (settings.tablet_image.id) {
                         const orientation = (settings.tablet_orientation !== 'exclude') ? `(orientation: ${settings.tablet_orientation}) and ` : null;
-                        src =  settings.tablet_image.url;
-                    #>
-                    <source srcset="{{settings.tablet_image.url}}" media="{{orientation}}(min-width: {{breakpoints.md}}px)">
-                    <# } #>
-                    <# if (settings.mobile_image.id) {
+                        src = settings.tablet_image.url;
+                        #>
+                        <source srcset="{{settings.tablet_image.url}}" media="{{orientation}}(min-width: {{breakpoints.md}}px)">
+                        <# } #>
+                        <# if (settings.mobile_image.id) {
                         const orientation = (settings.mobile_orientation !== 'exclude') ? `(orientation: ${settings.mobile_orientation})` : null;
-                        src =  settings.mobile_image.url;
+                        src = settings.mobile_image.url;
+                        #>
+                        <source srcset="{{settings.mobile_image.url}}" media="{{orientation}}">
+                        <# } #>
+                        <img src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}">
+                    </picture>
+                    <# }
+                    else {
+                        let ids = [];
+                        if (settings.desktop_image.id) {
+                            ids.push(settings.desktop_image.id);
+                            responsive = true;
+                        }
+
+                        if (settings.tablet_image.id) {
+                            ids.push(settings.tablet_image.id);
+                            responsive = true;
+                        }
+
+                        if (settings.mobile_image.id) {
+                            ids.push(settings.mobile_image.id);
+                        }
+
+                        preloadAttachments(ids);
+
+                        let srcSet = '';
+                        let sizes = '';
+                        let src = '';
+
+                        if (settings.desktop_image.id) {
+                            const imageAttachment = wp.media.attachment(settings.desktop_image.id).attributes;
+
+                            srcSet = `${settings.desktop_image.url} ${imageAttachment.width}w`;
+                            sizes = `(min-width: ${breakpoints['lg']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
+                            src = settings.desktop_image.url;
+                        }
+
+                        if (settings.tablet_image.id) {
+                            const imageAttachment = wp.media.attachment(settings.tablet_image.id).attributes;
+
+                            if (srcSet.length > 0) {
+                                srcSet += `, `;
+                                sizes += `, `;
+                            }
+
+                            if (imageAttachment.width) {
+                                srcSet += `${settings.tablet_image.url} ${imageAttachment.width}w`;
+                                sizes += `(min-width: ${breakpoints['md']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
+                            }
+
+                            src = settings.tablet_image.url;
+                        }
+
+                        if (settings.mobile_image.id) {
+                            const imageAttachment = wp.media.attachment(settings.mobile_image.id).attributes;
+
+                            if (imageAttachment.media !== 'image/svg+xml') {
+                                if (srcSet.length > 0) {
+                                    srcSet += `, `;
+                                    sizes += `, `;
+                                }
+
+                                srcSet += `${settings.mobile_image.url} ${imageAttachment.width}w`;
+                                sizes += `${Math.ceil(imageAttachment.width / 2)}px`;
+                            }
+
+                            src = settings.mobile_image.url;
+                        }
+
+                        if (responsive) {
                     #>
-                    <source srcset="{{settings.mobile_image.url}}" media="{{orientation}}">
-                    <# } #>
-                    <img src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}">
-                </picture>
-            <# }
-            else {
-                let ids = [];
-                if (settings.desktop_image.id) {
-                    ids.push(settings.desktop_image.id);
-                }
-
-                if (settings.tablet_image.id) {
-                    ids.push(settings.tablet_image.id);
-                }
-
-                if (settings.mobile_image.id) {
-                    ids.push(settings.mobile_image.id);
-                }
-
-                preloadAttachments(ids);
-
-                let srcSet = '';
-                let sizes = '';
-                let src = '';
-
-                if (settings.desktop_image.id) {
-                    const imageAttachment = wp.media.attachment(settings.desktop_image.id).attributes;
-
-                    srcSet = `${settings.desktop_image.url} ${imageAttachment.width}w`;
-                    sizes = `(min-width: ${breakpoints['lg']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
-                    src = settings.desktop_image.url;
-                }
-
-                if (settings.tablet_image.id) {
-                    const imageAttachment = wp.media.attachment(settings.tablet_image.id).attributes;
-
-                    if (srcSet.length > 0) {
-                        srcSet += `, `;
-                        sizes += `, `;
+                        <img id="responsive-image-for-elementor" src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}" srcset="{{ srcSet }}" sizes="{{ sizes }}"/>
+                    <#
+                        } else {
+                    #>
+                        <img id="responsive-image-for-elementor" src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}"/>
+                    <#
+                        }
                     }
-
-                    srcSet += `${settings.tablet_image.url} ${imageAttachment.width}w`;
-                    sizes += `(min-width: ${breakpoints['md']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
-                    src = settings.tablet_image.url;
-                }
-
-                if (settings.mobile_image.id) {
-                    const imageAttachment = wp.media.attachment(settings.mobile_image.id).attributes;
-
-                    if (srcSet.length > 0) {
-                        srcSet += `, `;
-                        sizes += `, `;
-                    }
-
-                    srcSet += `${settings.mobile_image.url} ${imageAttachment.width}w`;
-                    sizes += `${Math.ceil(imageAttachment.width / 2)}px`;
-                    src = settings.mobile_image.url;
-                }
-            #>
-                <img id="elementor-responsive-image" src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}" srcset="{{ srcSet }}" sizes="{{ sizes }}"/>
-            <# }
-            if ( linkUrl ) { #>
+                    if ( linkUrl ) { #>
                 </a>
-            <# } #>
-            <# if ( hasCaption() ) { #>
-                    <figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption>
-                </figure>
+                <# } #>
+                <# if ( hasCaption() ) { #>
+                <figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption>
+            </figure>
             <# } #>
         </div>
         <?php

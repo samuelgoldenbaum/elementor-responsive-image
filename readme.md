@@ -1,6 +1,6 @@
-# Elementor Responsive Image Widget
+# Responsive Image For Elementor Widget
 ## Overview
-Elementor Responsive Image is a responsive image widget for [Elementor](https://elementor.com).
+Responsive Image For Elementor is a responsive image widget for [Elementor](https://elementor.com).
 
 ## Why?
 There is no responsive image control within Elementor. Elementor does allow for responsive background images, but has no native responsive `img` or `picture` tags.
@@ -32,6 +32,6 @@ It is better to use css background-images when:
 3. Install as a plugin within WordPress.
 
 ## Documentation
-[Wiki](https://github.com/samuelgoldenbaum/elementor-responsive-image/wiki)
+[Wiki](https://github.com/samuelgoldenbaum/responsive-image-for-elementor/wiki)
 
 

@@ -1,14 +1,14 @@
 <?php
 /**
- * ELEMENTOR_RESPONSIVE_IMAGE class.
+ * Responsive_Image_For_Elementor class.
  *
  * @category   Class
- * @package    ElementorResponsiveImage
+ * @package    ResponsiveImageForElementor
  * @subpackage WordPress
  * @author     Samuel Goldenbaum
  * @copyright  2021 Samuel Goldenbaum
  * @license    https://opensource.org/licenses/GPL-3.0 GPL-3.0-only
- * @link       https://github.com/samuelgoldenbaum/elementor-responsive-image/
+ * @link       https://github.com/samuelgoldenbaum/responsive-image-for-elementor/
  * @since      1.0.0
  * php version 7.3.9
  */
@@ -18,19 +18,44 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-//require_once '../constants.php';
+require_once 'constants.php';
+
+
+abstract class NoticeType
+{
+    const Error = 'notice-error';
+    const Warning = 'notice-warning';
+    const Success = 'notice-success';
+    const Info = 'notice-info';
+}
+
+final class AdminNotice {
+    private $_message;
+    private $_noticeType;
+
+    function __construct( $message, $noticeType ) {
+        $this->_message = $message;
+        $this->_noticeType = $noticeType;
+
+        add_action( 'admin_notices', array( $this, 'render' ) );
+    }
+
+    function render() {
+        printf( '<div class="notice ' . $this->_noticeType . ' is-dismissible">%s</div>', $this->_message );
+    }
+}
 
 /**
- * Main Elementor Responsive Image Class
+ * Main Responsive Image For Elementor Class
  *
- * The init class that runs the Elementor Responsive Image plugin.
+ * The init class that runs the Responsive Image For Elementor plugin.
  * Intended To make sure that the plugin's minimum requirements are met.
  *
  * You should only modify the constants to match your plugin's needs.
  *
  * Any custom code should go inside Plugin Class in the plugin.php file.
  */
-final class Elementor_Responsive_Image {
+final class Responsive_Image_For_Elementor {
 
 	/**
 	 * Plugin Version
@@ -46,7 +71,7 @@ final class Elementor_Responsive_Image {
 	 * @since 1.0.0
 	 * @var string Minimum Elementor version required to run the plugin.
 	 */
-	const MINIMUM_ELEMENTOR_VERSION = '3.2.1';
+	const MINIMUM_ELEMENTOR_VERSION = '3.1.0';
 
 	/**
 	 * Minimum PHP Version
@@ -54,7 +79,7 @@ final class Elementor_Responsive_Image {
 	 * @since 1.0.0
 	 * @var string Minimum PHP version required to run the plugin.
 	 */
-	const MINIMUM_PHP_VERSION = '7.0';
+	const MINIMUM_PHP_VERSION = '7.3';
 
 	/**
 	 * Constructor
@@ -80,7 +105,7 @@ final class Elementor_Responsive_Image {
 	 * @access public
 	 */
 	public function i18n() {
-		load_plugin_textdomain( 'elementor-responsive-image' );
+		load_plugin_textdomain( RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD );
 	}
 
 	/**
@@ -105,7 +130,7 @@ final class Elementor_Responsive_Image {
 
 		// Check for required Elementor version.
 		if ( ! version_compare( ELEMENTOR_VERSION, self::MINIMUM_ELEMENTOR_VERSION, '>=' ) ) {
-			add_action( 'admin_notices', array( $this, 'admin_notice_minimum_elementor_version' ) );
+		    add_action( 'admin_notices', array( $this, 'admin_notice_minimum_elementor_version' ) );
 			return;
 		}
 
@@ -128,20 +153,18 @@ final class Elementor_Responsive_Image {
 	 * @access public
 	 */
 	public function admin_notice_missing_main_plugin() {
-		deactivate_plugins( plugin_basename( ELEMENTOR_RESPONSIVE_IMAGE ) );
+		deactivate_plugins( plugin_basename( RESPONSIVE_IMAGE_FOR_ELEMENTOR_FILE ) );
 
 		return sprintf(
 			wp_kses(
-				'<div class="notice notice-warning is-dismissible"><p><strong>"%1$s"</strong> requires <strong>"%2$s"</strong> to be installed and activated.</p></div>',
-				array(
-					'div' => array(
-						'class'  => array(),
-						'p'      => array(),
-						'strong' => array(),
-					),
-				)
+				'<div class="notice notice-warning is-dismissible"><p><strong>%1$s</strong> requires <strong>%2$s</strong> to be installed and activated.</p></div>',
+                array(
+                    'div' => array('class'  => array()),
+                    'p'      => array(),
+                    'strong' => array()
+                )
 			),
-			'Elementor Responsive Image',
+            PLUGIN_NAME,
 			'Elementor'
 		);
 	}
@@ -155,20 +178,18 @@ final class Elementor_Responsive_Image {
 	 * @access public
 	 */
 	public function admin_notice_minimum_elementor_version() {
-		deactivate_plugins( plugin_basename( ELEMENTOR_RESPONSIVE_IMAGE ) );
+        deactivate_plugins( plugin_basename( RESPONSIVE_IMAGE_FOR_ELEMENTOR_FILE ) );
 
-		return sprintf(
+		return printf(
 			wp_kses(
-				'<div class="notice notice-warning is-dismissible"><p><strong>"%1$s"</strong> requires <strong>"%2$s"</strong> version %3$s or greater.</p></div>',
+				'<div class="notice notice-warning is-dismissible"><p><strong>%1$s</strong> requires <strong>%2$s</strong> version %3$s or greater.</p></div>',
 				array(
-					'div' => array(
-						'class'  => array(),
-						'p'      => array(),
-						'strong' => array(),
-					),
+					'div' => array('class'  => array()),
+                    'p'      => array(),
+                    'strong' => array()
 				)
 			),
-			'Elementor Responsive Image',
+            PLUGIN_NAME,
 			'Elementor',
 			self::MINIMUM_ELEMENTOR_VERSION
 		);
@@ -183,25 +204,23 @@ final class Elementor_Responsive_Image {
 	 * @access public
 	 */
 	public function admin_notice_minimum_php_version() {
-		deactivate_plugins( plugin_basename( ELEMENTOR_RESPONSIVE_IMAGE ) );
+		deactivate_plugins( plugin_basename( RESPONSIVE_IMAGE_FOR_ELEMENTOR_FILE ) );
 
-		return sprintf(
+		return printf(
 			wp_kses(
-				'<div class="notice notice-warning is-dismissible"><p><strong>"%1$s"</strong> requires <strong>"%2$s"</strong> version %3$s or greater.</p></div>',
-				array(
-					'div' => array(
-						'class'  => array(),
-						'p'      => array(),
-						'strong' => array(),
-					),
-				)
+				'<div class="notice notice-warning is-dismissible"><p><strong>%1$s</strong> requires <strong>%2$s</strong> version %3$s or greater.</p></div>',
+                array(
+                    'div' => array('class'  => array()),
+                    'p'      => array(),
+                    'strong' => array()
+                )
 			),
-			'Elementor Responsive Image',
-			'Elementor',
-			self::MINIMUM_ELEMENTOR_VERSION
+            PLUGIN_NAME,
+			'PHP',
+			self::MINIMUM_PHP_VERSION
 		);
 	}
 }
 
-// Instantiate ELEMENTOR_RESPONSIVE_IMAGE.
-new Elementor_Responsive_Image();
+// Instantiate
+new Responsive_Image_For_Elementor();
