@@ -135,6 +135,20 @@ class ResponsiveImage extends Widget_Base
         );
 
         $this->add_control(
+            'title_source',
+            [
+                'label' => __( 'Title Source', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                'type' => Controls_Manager::SELECT,
+                'options' => [
+                    'none' => __( 'None', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                    'attachment' => __( 'Attachment Title', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                    'custom' => __( 'Custom Title', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                ],
+                'default' => 'attachment',
+            ]
+        );
+
+        $this->add_control(
             'title',
             array(
                 'label' => __('Title', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
@@ -143,7 +157,24 @@ class ResponsiveImage extends Widget_Base
                 'dynamic' => [
                     'active' => true,
                 ],
+                'condition' => [
+                    'title_source' => 'custom',
+                ],
             )
+        );
+
+        $this->add_control(
+            'alt_source',
+            [
+                'label' => __( 'Alt Source', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                'type' => Controls_Manager::SELECT,
+                'options' => [
+                    'none' => __( 'None', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                    'attachment' => __( 'Attachment Alt', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                    'custom' => __( 'Custom Alt', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD ),
+                ],
+                'default' => 'attachment',
+            ]
         );
 
         $this->add_control(
@@ -154,6 +185,9 @@ class ResponsiveImage extends Widget_Base
                 'default' => __('', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
                 'dynamic' => [
                     'active' => true,
+                ],
+                'condition' => [
+                    'alt_source' => 'custom',
                 ],
             )
         );
@@ -277,6 +311,26 @@ class ResponsiveImage extends Widget_Base
                     'link_to' => 'custom',
                 ],
                 'show_label' => false,
+            ]
+        );
+
+        $this->add_control(
+            'link_target',
+            [
+                'label' => __('Target', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                'type' => Controls_Manager::SELECT,
+                'dynamic' => [
+                    'active' => true,
+                ],
+                'default' => 'default',
+                'options' => [
+                    'default' => __('Default', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                    '_blank' => __('New Window', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                ],
+//                'placeholder' => __('https://your-link.com', RESPONSIVE_IMAGE_FOR_ELEMENTOR_TD),
+                'condition' => [
+                    'link_to' => 'custom',
+                ],
             ]
         );
 
@@ -1044,6 +1098,12 @@ class ResponsiveImage extends Widget_Base
                 $this->add_lightbox_data_attributes('link', $settings['image']['id'], $settings['open_lightbox']);
             }
 
+            if('custom' === $settings['link_to'] && '_blank' === $settings['link_target']) {
+                $this->add_render_attribute('link', [
+                    'target' => $settings['link_target'],
+                ]);
+            }
+
             $link_html = '<a class="responsive-image-for-elementor-link" ' . $this->get_render_attribute_string('link');
             if (isset($settings['title']) && trim($settings['title']) !== '') {
                 $link_html .= ' title="' . $settings['title'] . '"';
@@ -1073,164 +1133,7 @@ class ResponsiveImage extends Widget_Base
      *
      * @access protected
      */
-    protected function _content_template() {
-        ?>
-        <#
-        const breakpoints = <?php echo json_encode(Responsive::get_breakpoints()); ?>;
 
-        let responsive = false;
-
-        const hasCaption = () => {
-            return settings.tag === 'picture' && settings.caption_source === 'custom';
-        }
-
-        const preloadAttachments = async (attachment_ids) => {
-            const these = attachment_ids.filter((attachment_id) => {
-                return 'undefined' === typeof wp.media.attachment(attachment_id).get('url');
-            });
-
-            if (these.length === 0) {
-                return;
-            }
-
-            const attachments = these.map((id) => {
-                return wp.media.attachment(id).fetch();
-            });
-
-            await Promise.all(attachments);
-
-            view.render();
-        }
-
-        let linkUrl;
-        if ( 'custom' === settings.link_to ) {
-            linkUrl = settings.link.url;
-        } else if ( 'file' === settings.link_to ) {
-            linkUrl = settings.image.url;
-        }
-
-        let imgClass = '';
-        if ( '' !== settings.hover_animation ) {
-            imgClass = 'elementor-animation-' + settings.hover_animation;
-        }
-        #>
-        <div class="elementor-image{{ settings.shape ? ' elementor-image-shape-' + settings.shape : '' }}">
-            <# if ( hasCaption() ) { #>
-            <figure class="wp-caption">
-                <# } #>
-
-                <# if ( linkUrl ) { #>
-                <a title="{{ settings.title }}" class="responsive-image-for-elementor-link elementor-clickable" data-elementor-open-lightbox="{{ settings.open_lightbox }}" href="{{ linkUrl }}">
-                    <# } #>
-
-                    <# if ( settings.tag === 'picture' ) {
-                        let src = '';
-                    #>
-                    <picture>
-                        <# if (settings.desktop_image.id) {
-                        const orientation = (settings.desktop_orientation !== 'exclude') ? `(orientation: ${settings.desktop_orientation}) and ` : null;
-                        src = settings.desktop_image.url;
-                        #>
-                        <source srcset="{{settings.desktop_image.url}}" media="{{orientation}}(min-width: {{breakpoints.lg}}px)">
-                        <# } #>
-
-                        <# if (settings.tablet_image.id) {
-                        const orientation = (settings.tablet_orientation !== 'exclude') ? `(orientation: ${settings.tablet_orientation}) and ` : null;
-                        src = settings.tablet_image.url;
-                        #>
-                        <source srcset="{{settings.tablet_image.url}}" media="{{orientation}}(min-width: {{breakpoints.md}}px)">
-                        <# } #>
-                        <# if (settings.mobile_image.id) {
-                        const orientation = (settings.mobile_orientation !== 'exclude') ? `(orientation: ${settings.mobile_orientation})` : null;
-                        src = settings.mobile_image.url;
-                        #>
-                        <source srcset="{{settings.mobile_image.url}}" media="{{orientation}}">
-                        <# } #>
-                        <img src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}">
-                    </picture>
-                    <# }
-                    else {
-                        let ids = [];
-                        if (settings.desktop_image.id) {
-                            ids.push(settings.desktop_image.id);
-                            responsive = true;
-                        }
-
-                        if (settings.tablet_image.id) {
-                            ids.push(settings.tablet_image.id);
-                            responsive = true;
-                        }
-
-                        if (settings.mobile_image.id) {
-                            ids.push(settings.mobile_image.id);
-                        }
-
-                        preloadAttachments(ids);
-
-                        let srcSet = '';
-                        let sizes = '';
-                        let src = '';
-
-                        if (settings.desktop_image.id) {
-                            const imageAttachment = wp.media.attachment(settings.desktop_image.id).attributes;
-
-                            srcSet = `${settings.desktop_image.url} ${imageAttachment.width}w`;
-                            sizes = `(min-width: ${breakpoints['lg']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
-                            src = settings.desktop_image.url;
-                        }
-
-                        if (settings.tablet_image.id) {
-                            const imageAttachment = wp.media.attachment(settings.tablet_image.id).attributes;
-
-                            if (srcSet.length > 0) {
-                                srcSet += `, `;
-                                sizes += `, `;
-                            }
-
-                            if (imageAttachment.width) {
-                                srcSet += `${settings.tablet_image.url} ${imageAttachment.width}w`;
-                                sizes += `(min-width: ${breakpoints['md']}px) ${Math.ceil(imageAttachment.width / 2)}px`;
-                            }
-
-                            src = settings.tablet_image.url;
-                        }
-
-                        if (settings.mobile_image.id) {
-                            const imageAttachment = wp.media.attachment(settings.mobile_image.id).attributes;
-
-                            if (imageAttachment.media !== 'image/svg+xml') {
-                                if (srcSet.length > 0) {
-                                    srcSet += `, `;
-                                    sizes += `, `;
-                                }
-
-                                srcSet += `${settings.mobile_image.url} ${imageAttachment.width}w`;
-                                sizes += `${Math.ceil(imageAttachment.width / 2)}px`;
-                            }
-
-                            src = settings.mobile_image.url;
-                        }
-
-                        if (responsive) {
-                    #>
-                        <img id="responsive-image-for-elementor" src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}" srcset="{{ srcSet }}" sizes="{{ sizes }}"/>
-                    <#
-                        } else {
-                    #>
-                        <img id="responsive-image-for-elementor" src="{{ src }}" class="{{ imgClass }}" loading="{{ settings.loading }}" alt="{{ settings.alt }}"/>
-                    <#
-                        }
-                    }
-                    if ( linkUrl ) { #>
-                </a>
-                <# } #>
-                <# if ( hasCaption() ) { #>
-                <figcaption class="widget-image-caption wp-caption-text">{{{ settings.caption }}}</figcaption>
-            </figure>
-            <# } #>
-        </div>
-        <?php
-    }
 
     /**
      * Retrieve image widget link URL.
