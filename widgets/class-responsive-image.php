@@ -1002,15 +1002,15 @@ class ResponsiveImage extends Widget_Base
             if (!empty($settings['mobile_image']['id'])) {
                 $mobile_image_meta = wp_get_attachment_metadata($settings['mobile_image']['id']);
                 if (empty($mobile_image_meta['width'])) {
-//                    $mime_type = get_post_mime_type($settings['mobile_image']['id']);
-//                    if ($mime_type === 'image/svg+xml' && !$responsive) {
-//                        $svg_meta = $this->get_svg_dimensions($settings['mobile_image']['url']);
-//                        $svg_width = $svg_meta['width'];
-//                        $svg_height = $svg_meta['height'];
-//
-//                        $this->add_render_attribute('image', 'width', $svg_width);
-//                        $this->add_render_attribute('image', 'height', $svg_height);
-//                    }
+                   $mime_type = get_post_mime_type($settings['mobile_image']['id']);
+                   if ($mime_type === 'image/svg+xml' && !$responsive) {
+                       $svg_meta = $this->get_svg_dimensions($settings['mobile_image']['url']);
+                       $svg_width = $svg_meta['width'];
+                       $svg_height = $svg_meta['height'];
+
+                       $this->add_render_attribute('image', 'width', $svg_width);
+                       $this->add_render_attribute('image', 'height', $svg_height);
+                   }
                 } else {
                     $mobile_image_meta_width_adjusted_for_retina = $mobile_image_meta['width'] / 2;
 
@@ -1021,6 +1021,8 @@ class ResponsiveImage extends Widget_Base
 
                     $srcset .= "{$settings['mobile_image']['url']} {$mobile_image_meta['width']}w";
                     $sizes .= "{$mobile_image_meta_width_adjusted_for_retina}px";
+					$this->add_render_attribute('image', 'width', $mobile_image_meta['width']);
+                	$this->add_render_attribute('image', 'height', $mobile_image_meta['height']);
                 }
 
                 $src = $settings['mobile_image']['url'];
